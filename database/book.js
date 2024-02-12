@@ -12,7 +12,7 @@ const BookSchema = mongoose.Schema({
   category: [String],
 });
 
-// create a book model
-const BookModel = mongoose.model(BookSchema);
+// create a book model model: document model of mongodb
+const BookModel = mongoose.model("books",BookSchema);
 
 module.exports = BookModel;
