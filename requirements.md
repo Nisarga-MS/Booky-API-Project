@@ -28,7 +28,7 @@ add new book✔📌
 
     PUT -->update the existing data
 update book title✔📌
-update/add new author✔
+update/add new author✔📌
 
     DELETE --> delete data
 delete book✔  
@@ -48,7 +48,7 @@ to get list of authors based on books✔📌
 add new author✔📌
 
     PUT
-update author name✔
+update author name✔📌
 
     DELETE
 delete an author✔
@@ -66,8 +66,8 @@ to get list of publication based on books✔📌
 add new publications✔📌
 
     PUT
-update publication name✔
-update/add books to publication✔
+update publication name✔📌
+update/add books to publication✔📌
 
     DELETE
 delete the publication✔
