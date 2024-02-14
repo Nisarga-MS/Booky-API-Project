@@ -79,5 +79,7 @@ how does the server serve the request comming from the client??
 
 symbol  meaning : 📌 - done connecting to database , ✔ -  done creating  API related to it
 
+Pending task : Adding mangoose validation to all the models!!!!😢😢
+
 TO RUN THIS PROJECT USE: npm run server (bcz its scripted)
 
