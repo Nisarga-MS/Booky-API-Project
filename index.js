@@ -579,13 +579,22 @@ Acess         PUBLIC
 Parameter     isbn
 Methods       DELETE
 */
-booky.delete("/book/delete/:isbn", (req, res) => {
-  const updatedBookDatabase = database.books.filter(
-    (book) => book.ISBN !== req.params.isbn
-  );
-  database.books = updatedBookDatabase;
+booky.delete("/book/delete/:isbn",  async(req, res) => {
+
+// BEFORE ADDING MONDODB
+//   const updatedBookDatabase = database.books.filter(
+//     (book) => book.ISBN !== req.params.isbn
+//   );
+//   database.books = updatedBookDatabase;
+
+// AFTER ADDING MONDODB
+const updatedBookDatabase = await BookModel.findOneAndDelete(
+    {
+        ISBN : req.params.isbn
+    }
+);
   return res.json({
-    books: database.books,
+    // books: updatedBookDatabase , i did on purpose i thinks its not required
     message: "sucessfully deleted a book",
   });
 });
@@ -597,32 +606,65 @@ Acess         PUBLIC
 Parameter     isbn,authorId
 Methods       DELETE
 */
-booky.delete("/book/delete/author/:isbn/:authorId", (req, res) => {
-  //update book database
-  database.books.forEach((book) => {
-    if (book.ISBN === req.params.isbn) {
-      const newAuthorList = book.author.filter(
-        (author) => author !== parseInt(req.params.authorId)
-      );
-      book.author = newAuthorList;
-      return;
+booky.delete("/book/delete/author/:isbn/:authorId", async (req, res) => {
+
+// BEFORE ADDING MONDODB
+//   //update book database
+//   database.books.forEach((book) => {
+//     if (book.ISBN === req.params.isbn) {
+//       const newAuthorList = book.author.filter(
+//         (author) => author !== parseInt(req.params.authorId)
+//       );
+//       book.author = newAuthorList;
+//       return;
+//     }
+//   });
+
+//   //update author database
+//   database.authors.forEach((author) => {
+//     if (author.id === parseInt(req.params.authorId)) {
+//       const newBooksList = author.books.filter(
+//         (book) => book !== req.params.isbn
+//       );
+//       author.books = newBooksList;
+//       return;
+//     }
+//   });
+
+// AFTER ADDING MONDODB
+//update book database
+  const updatedBook = await BookModel.findOneAndUpdate(
+    {
+        ISBN : req.params.isbn,
+    },
+    {
+        $pull: {
+            author : parseInt(req.params.authorId),
+        }
+    },
+    {
+        new: true,
     }
-  });
+  );
 
   //update author database
-  database.authors.forEach((author) => {
-    if (author.id === parseInt(req.params.authorId)) {
-      const newBooksList = author.books.filter(
-        (book) => book !== req.params.isbn
-      );
-      author.books = newBooksList;
-      return;
+  const updatedAuthor = await AuthorModel.findOneAndUpdate(
+    {
+        id : parseInt(req.params.authorId),
+    },
+    {
+        $pull:{
+            books : req.params.isbn,
+        }
+    },
+    {
+        new: true,
     }
-  });
+  )
   return res.json({
-    book: database.books,
-    author: database.authors,
-    message: "author was deleted",
+    book: updatedBook,
+    author: updatedAuthor,
+    message: "author was sucessfully deleted from book",
   });
 });
 
@@ -633,29 +675,49 @@ Acess         PUBLIC
 Parameter     id
 Methods       DELETE
 */
-booky.delete("/author/delete/:id", (req, res) => {
-  const updatedAuthorDatabase = database.authors.filter(
-    (author) => author.id !== parseInt(req.params.id)
-  );
-  database.authors = updatedAuthorDatabase;
-  return res.json({ author: database.authors, message: "author was deleted" });
+booky.delete("/author/delete/:id",  async (req, res) => {
+
+    // BEFORE ADDING MONDODB
+//   const updatedAuthorDatabase = database.authors.filter(
+//     (author) => author.id !== parseInt(req.params.id)
+//   );
+//   database.authors = updatedAuthorDatabase;
+
+// AFTER ADDING MONDODB
+const updatedAuthorDatabase = await AuthorModel.findOneAndDelete(
+    {
+        id: parseInt(req.params.id),
+    }
+);
+  return res.json({
+    //  author: updatedAuthorDatabase, i did it on purpose bczz i think its not required
+    message: "sucessfully deleted a author" });
 });
 
 /* 
 Route          /publication/delete
-Description   delete a author 
+Description   delete a publication 
 Acess         PUBLIC
 Parameter     id
 Methods       DELETE
 */
-booky.delete("/publication/delete/:id", (req, res) => {
-  const updatedPublicationDatabase = database.publications.filter(
-    (publication) => publication.id !== parseInt(req.params.id)
-  );
-  database.publications = updatedPublicationDatabase;
+booky.delete("/publication/delete/:id", async (req, res) => {
+
+ // BEFORE ADDING MONDODB
+//   const updatedPublicationDatabase = database.publications.filter(
+//     (publication) => publication.id !== parseInt(req.params.id)
+//   );
+//   database.publications = updatedPublicationDatabase;
+
+ // AFTER ADDING MONDODB
+ const updatedPublicationDatabase = await PublicationModel.findOneAndDelete(
+    {
+        id : parseInt(req.params.id)
+    }
+ );
   return res.json({
-    publication: database.publications,
-    message: "publication was deleted",
+    // publication: database.publications, i did it on purpose bczz i think its not required
+    message: "sucessfully deleted a publication",
   });
 });
 
@@ -666,31 +728,65 @@ Acess         PUBLIC
 Parameter     pubId,isbn
 Methods       DELETE
 */
-booky.delete("/publication/delete/book/:pubId/:isbn", (req, res) => {
-  //update publication database
-  database.publications.forEach((publication) => {
-    if (publication.id === parseInt(req.params.pubId)) {
-      const newBooksList = publication.books.filter(
-        (books) => books !== req.params.isbn
-      );
-      publication.books = newBooksList;
-      return;
-    }
-  });
+booky.delete("/publication/delete/book/:pubId/:isbn",  async (req, res) => {
 
-  // update books database
-  database.books.forEach((book) => {
-    if (book.ISBN === req.params.isbn) {
-      const newPublicationsList = book.publications.filter(
-        (publication) => publication !== parseInt(req.params.pubId)
-      );
-      book.publications = newPublicationsList;
-      return;
+  // BEFORE ADDING MONDODB   
+//   //update publication database
+//   database.publications.forEach((publication) => {
+//     if (publication.id === parseInt(req.params.pubId)) {
+//       const newBooksList = publication.books.filter(
+//         (books) => books !== req.params.isbn
+//       );
+//       publication.books = newBooksList;
+//       return;
+//     }
+//   });
+
+//   // update books database
+//   database.books.forEach((book) => {
+//     if (book.ISBN === req.params.isbn) {
+//       const newPublicationsList = book.publications.filter(
+//         (publication) => publication !== parseInt(req.params.pubId)
+//       );
+//       book.publications = newPublicationsList;
+//       return;
+//     }
+//   });
+
+ // AFTER ADDING MONDODB
+ //update publication database
+ const updatedPublication = await PublicationModel.findOneAndUpdate(
+    {
+        id : parseInt(req.params.pubId)
+    },
+    {
+        $pull :{
+            books : req.params.isbn
+        }
+    },
+    {
+         new : true
     }
-  });
+ );
+
+ // update books database
+ const updatedBook = await BookModel.findOneAndUpdate(
+    {
+        ISBN  : req.params.isbn
+    },
+    {
+        $pull:{
+            publications : parseInt(req.params.pubId)
+        }
+    }, 
+    {
+         new: true
+    }
+ );
+
   return res.json({
-    publication: database.publications,
-    book: database.books,
+    publication: updatedPublication,
+    book: updatedBook,
     message: "book was sucessfully deleted from publication",
   });
 });

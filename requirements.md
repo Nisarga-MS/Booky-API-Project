@@ -31,8 +31,8 @@ update book title✔📌
 update/add new author✔📌
 
     DELETE --> delete data
-delete book✔  
-delete an author from a book✔
+delete book✔  📌
+delete an author from a book✔📌
 
 
 
@@ -51,7 +51,7 @@ add new author✔📌
 update author name✔📌
 
     DELETE
-delete an author✔
+delete an author✔📌
 
 
     Publication
@@ -70,7 +70,7 @@ update publication name✔📌
 update/add books to publication✔📌
 
     DELETE
-delete the publication✔
+delete the publication✔📌
 delete a book  from publications✔
 
 
