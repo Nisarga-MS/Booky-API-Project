@@ -28,9 +28,9 @@ const publications = [
   {
     id: 1,
     name: "writex",
-    books: ["12345Book","123456789Secret"],
+    books: ["12345Book", "123456789Secret"],
   },
 ];
 
 // data in this file can be shared by using this export method
-module.exports ={books, authors, publications};
+module.exports = { books, authors, publications };
