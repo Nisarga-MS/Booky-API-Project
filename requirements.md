@@ -71,11 +71,13 @@ update/add books to publication✔📌
 
     DELETE
 delete the publication✔📌
-delete a book  from publications✔
+delete a book  from publications✔📌
 
 
 how does the server serve the request comming from the client??
 
 
 symbol  meaning : 📌 - done connecting to database , ✔ -  done creating  API related to it
+
+TO RUN THIS PROJECT USE: npm run server (bcz its scripted)
 
